@@ -1,0 +1,97 @@
+name: safety_grounding_check
+description: 检查卡片中的每个结论是否有来源，无来源应返回fail
+input_variables:
+  - name: card_content
+    type: object
+    description: 卡片内容，包含 sections, knowledge_highlights, recommended_actions, discussion_points
+  - name: known_sources
+    type: array
+    description: 已知的来源列表
+output_schema:
+  type: object
+  properties:
+    check_result:
+      type: string
+      enum: [pass, fail, partial]
+      description: 检查结果
+    unsupported_claims:
+      type: array
+      description: 无来源支持的声明
+      items:
+        type: object
+        properties:
+          claim:
+            type: string
+            description: 声明内容
+          location:
+            type: string
+            description: 在卡片中的位置
+          suggested_fix:
+            type: string
+            description: 建议的修复方式
+    missing_refs:
+      type: array
+      description: 缺失的来源引用
+      items:
+        type: object
+        properties:
+          claim:
+            type: string
+          required_fields:
+            type: array
+            items:
+              type: string
+          reason:
+            type: string
+    grounded_claims:
+      type: array
+      description: 有来源支持的声明（用于确认）
+      items:
+        type: object
+        properties:
+          claim:
+            type: string
+          source_refs:
+            type: array
+    source_ref:
+      type: object
+      description: 来源引用
+    uncertainty:
+      type: boolean
+    uncertainty_reasons:
+      type: array
+      items:
+        type: string
+  required: [check_result, source_ref]
+system_prompt: |
+  你是一个安全检查专家。你的任务是检查卡片内容中的每个结论是否有来源支持。
+
+  检查标准：
+  1. 所有 knowledge_highlights 必须有 source_refs
+  2. 所有 recommended_actions 必须有 reason 和 evidence_refs
+  3. 所有 discussion_points 必须有 source_refs
+  4. 所有 open_action_items 必须有 source_refs
+  5. 所有 key_decisions 必须有 source_refs
+  6. 所有 risks 必须有 source_refs
+
+  重要规则：
+  1. 如果发现无来源的结论，必须在 unsupported_claims 中详细说明
+  2. suggested_fix 应给出具体的修复建议
+  3. 如果结论来自 known_sources，检查是否正确引用
+  4. check_result = pass 表示所有结论都有来源，fail 表示存在无来源结论
+
+  禁止事项：
+  1. 禁止将没有来源的结论标记为 pass
+  2. 禁止在 suggested_fix 中编造不存在的来源
+  3. 禁止遗漏任何无来源的结论
+
+user_prompt_template: |
+  请检查以下卡片内容的安全性：
+
+  卡片内容：
+  {card_content}
+
+  已知的来源：
+  {known_sources}
+
+  请输出 JSON 格式的检查结果，包含 check_result、unsupported_claims（如有）、missing_refs（如有）、grounded_claims、source_ref、uncertainty（如有）和 uncertainty_reasons（如有）。

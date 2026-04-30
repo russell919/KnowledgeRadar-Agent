@@ -1,0 +1,46 @@
+[
+    {
+        "record_id": "bitable-001",
+        "table_id": "apollo-status-tracker",
+        "source_type": "bitable",
+        "project_id": "apollo-project",
+        "fields": {
+            "项目名称": "Apollo 企业级知识库",
+            "项目状态": "进行中",
+            "负责人": "李明月",
+            "开始时间": "2024-01-15",
+            "预计完成": "2024-06-30",
+            "进度": 50
+        }
+    },
+    {
+        "record_id": "bitable-002",
+        "table_id": "apollo-risks",
+        "source_type": "bitable",
+        "project_id": "apollo-project",
+        "fields": {
+            "风险名称": "OpenClaw 插件开发",
+            "风险等级": "中",
+            "影响范围": "核心功能",
+            "负责人": "王浩然",
+            "预计解决": "2024-04-20",
+            "状态": "待解决",
+            "风险描述": "团队对 OpenClaw 插件开发不熟悉，可能影响上线进度"
+        }
+    },
+    {
+        "record_id": "bitable-003",
+        "table_id": "apollo-risks",
+        "source_type": "bitable",
+        "project_id": "apollo-project",
+        "fields": {
+            "风险名称": "向量检索精度",
+            "风险等级": "高",
+            "影响范围": "检索服务",
+            "负责人": "陈佳怡",
+            "预计解决": "2024-05-01",
+            "状态": "已识别",
+            "风险描述": "测试发现大文档时向量检索精度不足"
+        }
+    }
+]

@@ -1,0 +1,80 @@
+name: weekly_theme_cluster
+description: 对一周内的知识条目进行主题聚类
+input_variables:
+  - name: knowledge_items
+    type: array
+    description: 一周内的知识条目列表
+  - name: time_range
+    type: object
+    description: 时间范围，包含 start_date 和 end_date
+  - name: min_cluster_size
+    type: integer
+    description: 最小聚类大小
+    default: 2
+output_schema:
+  type: object
+  properties:
+    themes:
+      type: array
+      description: 主题聚类列表
+      items:
+        type: object
+        properties:
+          theme_id:
+            type: string
+            description: 主题ID
+          theme_title:
+            type: string
+            description: 主题标题（简洁概括）
+          summary:
+            type: string
+            description: 主题摘要
+          knowledge_items:
+            type: array
+            description: 该主题下的知识条目
+          key_learnings:
+            type: array
+            items:
+              type: string
+            description: 该主题下的关键收获（3-5条）
+          member_count:
+            type: integer
+            description: 该主题包含的知识条目数量
+    source_ref:
+      type: object
+      description: 来源引用
+    total_themes:
+      type: integer
+      description: 聚类出的主题数量
+    uncertainty:
+      type: boolean
+    uncertainty_reasons:
+      type: array
+      items:
+        type: string
+  required: [themes, source_ref, total_themes]
+system_prompt: |
+  你是一个主题聚类专家。你的任务是对一周内的知识条目进行主题聚类。
+
+  重要规则：
+  1. 根据知识条目的内容相关性进行聚类
+  2. 每个主题应有简洁的 theme_title
+  3. key_learnings 应从该主题下的知识条目中提炼
+  4. 小于 min_cluster_size 的孤立条目应标记为 "miscellaneous" 或单独成簇
+  5. 聚类数量不宜过多，优先保证每个簇有足够的知识量
+
+  禁止事项：
+  1. 禁止编造知识条目中没有的内容作为 key_learnings
+  2. 禁止将不相关的知识强行归为一类
+  3. 禁止创建空洞无物的 theme_title
+
+user_prompt_template: |
+  请对以下一周内的知识条目进行主题聚类：
+
+  时间范围：{time_range}
+  最小聚类大小：{min_cluster_size}
+
+  知识条目列表：
+  {knowledge_items}
+
+  请输出 JSON 格式的主题聚类结果，包含 themes、source_ref、total_themes、uncertainty（如有）和 uncertainty_reasons（如有）。

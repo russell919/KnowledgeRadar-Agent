@@ -1,0 +1,46 @@
+[
+    {
+        "meeting_id": "apollo-review-001",
+        "title": "Apollo 技术方案评审会",
+        "description": "评审 Apollo 技术方案设计文档",
+        "start_time": "2024-03-15 14:00:00",
+        "end_time": "2024-03-15 16:00:00",
+        "participants": ["pm-apollo", "backend-apollo", "frontend-apollo", "test-apollo"],
+        "creator": "pm-apollo",
+        "source_type": "meeting",
+        "project_id": "apollo-project",
+        "agenda": [
+            "技术方案讲解",
+            "架构讨论",
+            "Q&A"
+        ],
+        "notes": {
+            "summary": "技术方案评审通过，需要补充性能测试方案",
+            "action_items": [
+                "补充性能测试方案 (test-apollo)",
+                "完善风险评估 (backend-apollo)",
+                "准备环境搭建文档 (pm-apollo)"
+            ],
+            "key_decisions": [
+                "确定采用 FastAPI + LangGraph 的架构",
+                "向量数据库采用 pgvector"
+            ]
+        }
+    },
+    {
+        "meeting_id": "apollo-review-002",
+        "title": "周会",
+        "description": "本周进度回顾和下周计划",
+        "start_time": "2024-05-01 14:00:00",
+        "end_time": "2024-05-01 15:00:00",
+        "participants": ["pm-apollo", "backend-apollo", "frontend-apollo", "test-apollo"],
+        "creator": "pm-apollo",
+        "source_type": "meeting",
+        "project_id": "apollo-project",
+        "agenda": [
+            "进度回顾",
+            "下周计划",
+            "风险同步"
+        ]
+    }
+]

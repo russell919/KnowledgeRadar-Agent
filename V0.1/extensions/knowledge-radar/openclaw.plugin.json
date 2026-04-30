@@ -1,0 +1,38 @@
+{
+  "id": "knowledge-radar",
+  "name": "知识雷达",
+  "version": "1.0.0",
+  "description": "企业知识整合与分发Agent，支持知识推送、会前简报、文档变更提醒、新人入职引导等场景",
+  "author": "知识雷达团队",
+  "license": "MIT",
+  "configSchema": {
+    "type": "object",
+    "required": ["backendBaseUrl"],
+    "properties": {
+      "backendBaseUrl": {
+        "type": "string",
+        "description": "知识雷达后端服务基础URL，例如：http://localhost:8000",
+        "format": "uri"
+      },
+      "apiKey": {
+        "type": "string",
+        "description": "后端API访问密钥（可选）",
+        "sensitive": true
+      },
+      "defaultWorkspaceId": {
+        "type": "string",
+        "description": "默认工作空间ID（可选）"
+      },
+      "enableHumanPreview": {
+        "type": "boolean",
+        "description": "是否启用人工预览确认，默认开启",
+        "default": true
+      }
+    }
+  },
+  "skills": ["skills"],
+  "permissions": {
+    "network": ["*"],
+    "storage": ["read", "write"]
+  }
+}

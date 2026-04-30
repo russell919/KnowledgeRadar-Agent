@@ -1,0 +1,19 @@
+{
+  "plugins": {
+    "entries": {
+      "knowledge-radar": {
+      "enabled": true,
+      "name": "知识雷达",
+      "description": "企业级知识整合与分发平台",
+      "config": {
+        "backendBaseUrl": "http://localhost:8787",
+        "apiKey": "dev-local-key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "skills": ["knowledge-radar"]
+    }
+  }
+}

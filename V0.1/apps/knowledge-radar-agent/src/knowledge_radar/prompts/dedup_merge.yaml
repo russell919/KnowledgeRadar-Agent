@@ -1,0 +1,72 @@
+name: dedup_merge
+description: 对知识条目进行去重和合并
+input_variables:
+  - name: knowledge_items
+    type: array
+    description: 待去重的知识条目列表
+  - name: similarity_threshold
+    type: number
+    description: 相似度阈值，超过此值认为重复
+    default: 0.85
+output_schema:
+  type: object
+  properties:
+    unique_items:
+      type: array
+      description: 去重后的唯一知识条目
+      items:
+        type: object
+        properties:
+          knowledge_item:
+            type: object
+            description: 保留的知识条目
+          merged_from:
+            type: array
+            items:
+              type: string
+            description: 合并进来的知识条目ID列表
+          merge_reason:
+            type: string
+            description: 合并原因
+    duplicates:
+      type: array
+      description: 被识别为重复的条目（仅记录，不删除）
+      items:
+        type: object
+    source_ref:
+      type: object
+      description: 来源引用
+    statistics:
+      type: object
+      properties:
+        total_input:
+          type: integer
+        unique_output:
+          type: integer
+        merge_count:
+          type: integer
+  required: [unique_items, source_ref, statistics]
+system_prompt: |
+  你是一个知识去重专家。你的任务是对多个知识条目进行去重和合并。
+
+  重要规则：
+  1. 判断重复的主要依据：标题相似 + 内容相似 + 来源相同
+  2. 合并时保留最完整、最新的条目
+  3. 记录所有被合并条目的 ID
+  4. 相似度低于 threshold 的条目不应被合并
+  5. 如果无法判断是否重复，使用 uncertainty 说明
+
+  禁止事项：
+  1. 禁止删除具有不同 source_ref 的相似条目（可能来自不同来源）
+  2. 禁止合并主题相似但内容实质不同的条目
+  3. 禁止在 merge_reason 中杜撰不存在的合并原因
+
+user_prompt_template: |
+  请对以下知识条目进行去重：
+
+  相似度阈值：{similarity_threshold}
+
+  知识条目列表：
+  {knowledge_items}
+
+  请输出 JSON 格式的去重结果，包含 unique_items、duplicates、source_ref、statistics。

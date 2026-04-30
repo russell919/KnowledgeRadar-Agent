@@ -1,0 +1,72 @@
+[
+    {
+        "task_id": "task-001",
+        "title": "完成 PRD 文档编写",
+        "description": "编写 Apollo 产品需求文档",
+        "priority": "high",
+        "status": "done",
+        "owner": "pm-apollo",
+        "due_date": "2024-02-20",
+        "completed_at": "2024-02-18",
+        "source_type": "task",
+        "project_id": "apollo-project"
+    },
+    {
+        "task_id": "task-002",
+        "title": "完成技术方案设计",
+        "description": "编写 Apollo 技术方案设计文档",
+        "priority": "high",
+        "status": "done",
+        "owner": "backend-apollo",
+        "due_date": "2024-03-15",
+        "completed_at": "2024-03-14",
+        "source_type": "task",
+        "project_id": "apollo-project"
+    },
+    {
+        "task_id": "task-003",
+        "title": "开发权限系统",
+        "description": "实现 RBAC 权限管理",
+        "priority": "high",
+        "status": "in_progress",
+        "owner": "backend-apollo",
+        "due_date": "2024-04-20",
+        "source_type": "task",
+        "project_id": "apollo-project"
+    },
+    {
+        "task_id": "task-004",
+        "title": "开发飞书卡片组件",
+        "description": "开发飞书消息卡片组件",
+        "priority": "medium",
+        "status": "in_progress",
+        "owner": "frontend-apollo",
+        "due_date": "2024-04-25",
+        "source_type": "task",
+        "project_id": "apollo-project"
+    },
+    {
+        "task_id": "task-005",
+        "title": "性能测试方案",
+        "description": "编写 Apollo 性能测试方案",
+        "priority": "medium",
+        "status": "blocked",
+        "owner": "test-apollo",
+        "due_date": "2024-04-10",
+        "block_reason": "等待技术方案细节",
+        "source_type": "task",
+        "project_id": "apollo-project"
+    },
+    {
+        "task_id": "task-006",
+        "title": "新人入组文档",
+        "description": "整理和完善项目入组指南",
+        "priority": "low",
+        "status": "done",
+        "owner": "pm-apollo",
+        "due_date": "2024-04-01",
+        "completed_at": "2024-04-01",
+        "source_type": "task",
+        "project_id": "apollo-project"
+    }
+]

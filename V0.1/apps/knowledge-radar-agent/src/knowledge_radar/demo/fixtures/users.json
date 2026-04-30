@@ -1,0 +1,62 @@
+[
+    {
+        "user_id": "pm-apollo",
+        "name": "李明月",
+        "role": "pm",
+        "email": "limingyue@example.com",
+        "avatar": "",
+        "department": "产品部",
+        "interests": ["项目规划", "需求分析", "风险评估"],
+        "join_date": "2024-01-15"
+    },
+    {
+        "user_id": "backend-apollo",
+        "name": "王浩然",
+        "role": "backend",
+        "email": "wanghaoran@example.com",
+        "avatar": "",
+        "department": "技术部",
+        "interests": ["技术架构", "后端开发", "性能优化"],
+        "join_date": "2024-02-01"
+    },
+    {
+        "user_id": "frontend-apollo",
+        "name": "张婷婷",
+        "role": "frontend",
+        "email": "zhangtingting@example.com",
+        "avatar": "",
+        "department": "技术部",
+        "interests": ["前端技术", "用户体验", "React"],
+        "join_date": "2024-02-10"
+    },
+    {
+        "user_id": "test-apollo",
+        "name": "陈佳怡",
+        "role": "test",
+        "email": "chenjiayi@example.com",
+        "avatar": "",
+        "department": "质量部",
+        "interests": ["测试策略", "自动化测试", "缺陷管理"],
+        "join_date": "2024-02-20"
+    },
+    {
+        "user_id": "design-apollo",
+        "name": "林小雅",
+        "role": "design",
+        "email": "linxiaoya@example.com",
+        "avatar": "",
+        "department": "设计部",
+        "interests": ["UI设计", "设计规范", "用户研究"],
+        "join_date": "2024-03-01"
+    },
+    {
+        "user_id": "new-user",
+        "name": "赵小星",
+        "role": "newcomer",
+        "email": "zhaoxiaoxing@example.com",
+        "avatar": "",
+        "department": "技术部",
+        "interests": ["学习新知识", "前端开发"],
+        "join_date": "2024-04-25"
+    }
+]

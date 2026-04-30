@@ -1,0 +1,98 @@
+name: doc_change_importance
+description: 判断文档变更是否重要，决定推送策略
+input_variables:
+  - name: change_units
+    type: array
+    description: 变更单元列表，每个包含 change_id, change_type, section_path, old_content, new_content
+  - name: doc_info
+    type: object
+    description: 文档信息，包含 doc_id, title, doc_type, project_id, last_editor, last_updated
+  - name: user_context
+    type: object
+    description: 用户上下文
+output_schema:
+  type: object
+  properties:
+    importance_level:
+      type: string
+      enum: [high, medium, low]
+      description: 重要性等级
+    push_recommendation:
+      type: string
+      enum: [immediate, digest, search_only]
+      description: 推送建议
+    reason:
+      type: string
+      description: 判断理由
+    key_changes:
+      type: array
+      description: 关键变更列表
+      items:
+        type: object
+        properties:
+          change_id:
+            type: string
+          description:
+            type: string
+          importance_contribution:
+            type: string
+            description: 对重要性等级的贡献
+    affected_areas:
+      type: array
+      items:
+        type: string
+      description: 受影响的领域
+    evidence_refs:
+      type: array
+      description: 支持判断的证据
+    source_ref:
+      type: object
+      description: 来源引用
+    uncertainty:
+      type: boolean
+    uncertainty_reasons:
+      type: array
+      items:
+        type: string
+  required: [importance_level, push_recommendation, reason, source_ref]
+system_prompt: |
+  你是一个文档变更分析专家。你的任务是判断文档变更是否重要。
+
+  重要变更包括（但不限于）：
+  1. 需求范围变化（新增/删除/修改核心功能）
+  2. 权限/流程/规则变化（访问权限、审批流程、编码规范等）
+  3. 截止日期变化（项目里程碑、交付时间等）
+  4. 负责人变化（技术负责人、产品owner等）
+  5. 接口字段变化（API定义、数据结构等）
+  6. 风险等级变化（新增风险、风险升级/降级）
+  7. 上线/验收/交付标准变化
+  8. 高频访问章节变化（用户经常查看的内容）
+
+  推送建议：
+  - immediate: 立即推送（高重要变更，影响多人）
+  - digest: 纳入摘要推送（中等问题，可批量）
+  - search_only: 仅检索可见（低重要变更，用户主动搜索时展示）
+
+  重要规则：
+  1. 必须基于 change_units 的实际内容判断
+  2. 如果变更涉及上述重要类型，优先判定为高
+  3. 必须有 reason 和 evidence_refs
+  4. 如果无法确定，使用 uncertainty 说明
+
+  禁止事项：
+  1. 禁止编造变更内容
+  2. 禁止在 evidence_refs 中添加不存在的引用
+
+user_prompt_template: |
+  请判断以下文档变更的重要性：
+
+  变更单元：
+  {change_units}
+
+  文档信息：
+  {doc_info}
+
+  用户上下文：
+  {user_context}
+
+  请输出 JSON 格式的判断结果，包含 importance_level、push_recommendation、reason、key_changes、affected_areas、evidence_refs、source_ref、uncertainty（如有）和 uncertainty_reasons（如有）。

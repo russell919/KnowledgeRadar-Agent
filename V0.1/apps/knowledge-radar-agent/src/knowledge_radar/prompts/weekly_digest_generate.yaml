@@ -1,0 +1,94 @@
+name: weekly_digest_generate
+description: 生成每周知识摘要卡片
+input_variables:
+  - name: themes
+    type: array
+    description: 主题聚类列表
+  - name: user_profile
+    type: object
+    description: 用户画像，包含 interests, tags, preferences
+  - name: time_range
+    type: object
+    description: 时间范围
+output_schema:
+  type: object
+  properties:
+    card_title:
+      type: string
+      description: 卡片标题
+    summary:
+      type: string
+      description: 摘要（100-200字）
+    sections:
+      type: array
+      description: 卡片内容区块
+      items:
+        type: object
+        properties:
+          section_title:
+            type: string
+          content:
+            type: string
+          knowledge_highlights:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                summary:
+                  type: string
+                source_refs:
+                  type: array
+    action_suggestions:
+      type: array
+      items:
+        type: object
+        properties:
+          action:
+            type: string
+          reason:
+            type: string
+          evidence_refs:
+            type: array
+    source_refs:
+      type: array
+      description: 所有引用的来源
+    push_targets:
+      type: array
+      items:
+        type: string
+      description: 建议推送的目标用户
+    uncertainty:
+      type: boolean
+    uncertainty_reasons:
+      type: array
+      items:
+        type: string
+  required: [card_title, summary, sections, source_refs]
+system_prompt: |
+  你是一个知识摘要生成专家。你的任务是根据主题聚类生成每周知识摘要卡片。
+
+  重要规则：
+  1. 卡片内容必须基于 themes 中的知识条目
+  2. action_suggestions 必须有 reason 和 evidence_refs
+  3. 每个 knowledge_highlights 必须有 source_refs
+  4. 优先展示与用户 profile 相关的主题
+  5. 禁止在摘要中编造不存在的知识内容
+
+  禁止事项：
+  1. 禁止编造来源引用
+  2. 禁止生成没有证据支持的建议
+  3. 禁止省略 source_refs
+  4. 禁止猜测用户偏好，必须基于 user_profile 中的实际信息
+
+user_prompt_template: |
+  请生成每周知识摘要卡片：
+
+  用户画像：{user_profile}
+  时间范围：{time_range}
+
+  主题聚类：
+  {themes}
+
+  请输出 JSON 格式的卡片内容，包含 card_title、summary、sections、action_suggestions、source_refs、push_targets（如有）、uncertainty（如有）和 uncertainty_reasons（如有）。

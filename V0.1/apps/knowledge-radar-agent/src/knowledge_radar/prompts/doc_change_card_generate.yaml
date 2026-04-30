@@ -1,0 +1,102 @@
+name: doc_change_card_generate
+description: 生成文档变更通知卡片
+input_variables:
+  - name: change_analysis
+    type: object
+    description: 变更分析结果，包含 importance_level, key_changes, affected_areas
+  - name: diff_result
+    type: array
+    description: 差分结果，包含 change_units
+  - name: recipient_info
+    type: object
+    description: 接收人信息，包含 user_id, role, projects, relationship_to_doc
+output_schema:
+  type: object
+  properties:
+    card_title:
+      type: string
+      description: 卡片标题
+    summary:
+      type: string
+      description: 摘要（100-150字）
+    change_highlights:
+      type: array
+      description: 变更亮点
+      items:
+        type: object
+        properties:
+          section:
+            type: string
+          change_type:
+            type: string
+          old_value:
+            type: string
+          new_value:
+            type: string
+          source_refs:
+            type: array
+    impact_analysis:
+      type: string
+      description: 对接收人的影响分析
+    recommended_actions:
+      type: array
+      items:
+        type: object
+        properties:
+          action:
+            type: string
+          reason:
+            type: string
+          evidence_refs:
+            type: array
+    related_knowledge:
+      type: array
+      description: 相关知识（背景信息）
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          summary:
+            type: string
+          source_refs:
+            type: array
+    source_refs:
+      type: array
+      description: 所有引用的来源
+    uncertainty:
+      type: boolean
+    uncertainty_reasons:
+      type: array
+      items:
+        type: string
+  required: [card_title, summary, change_highlights, impact_analysis, source_refs]
+system_prompt: |
+  你是一个文档变更通知生成专家。你的任务是为接收人生成个性化的变更通知卡片。
+
+  重要规则：
+  1. 必须基于 change_analysis 和 diff_result，不得编造变更内容
+  2. change_highlights 必须有 source_refs
+  3. recommended_actions 必须有 reason 和 evidence_refs
+  4. impact_analysis 应结合 recipient_info，体现个性化
+  5. related_knowledge 应提供理解变更所需的背景信息
+
+  禁止事项：
+  1. 禁止编造变更内容或引用
+  2. 禁止省略任何内容的 source_refs
+  3. 禁止生成没有证据支持的建议
+  4. 禁止猜测 recipient_info 中不存在的信息
+
+user_prompt_template: |
+  请生成文档变更通知卡片：
+
+  变更分析：
+  {change_analysis}
+
+  差分结果：
+  {diff_result}
+
+  接收人信息：
+  {recipient_info}
+
+  请输出 JSON 格式的卡片内容，包含 card_title、summary、change_highlights、impact_analysis、recommended_actions、related_knowledge、source_refs、uncertainty（如有）和 uncertainty_reasons（如有）。
